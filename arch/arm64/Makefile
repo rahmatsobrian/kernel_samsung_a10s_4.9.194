@@ -66,13 +66,12 @@ KBUILD_AFLAGS	+= $(lseinstr)
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
 KBUILD_CPPFLAGS	+= -mbig-endian
 AS		+= -EB
-override LD	+= -EB
+LD		+= -EB -m aarch64elfb
 UTS_MACHINE	:= aarch64_be
 else
 KBUILD_CPPFLAGS	+= -mlittle-endian
 AS		+= -EL
-# Ganti aarch64linux menjadi aarch64elf di sini:
-override LD	+= -EL -m aarch64elf
+LD		+= -EL -m aarch64elf
 UTS_MACHINE	:= aarch64
 endif
 
