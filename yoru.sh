@@ -114,8 +114,10 @@ build_kernel() {
         sed -i 's/CONFIG_KSU=y/# CONFIG_KSU is not set/g' arch/arm64/configs/${TEMP_DEFCONFIG}
     fi
 
+GCC_TOOLCHAIN=$(dirname $(dirname $(which aarch64-linux-gnu-gcc)))
+
     # Menyiapkan konfigurasi dengan flag sapu jagat
-    make O=out ARCH=arm64 KCFLAGS=-w CONFIG_SECTION_MISMATCH_WARN_ONLY=y ${TEMP_DEFCONFIG} || {
+    make O=out ARCH=arm64 KCFLAGS="-w --gcc-toolchain=${GCC_TOOLCHAIN}" CONFIG_SECTION_MISMATCH_WARN_ONLY=y ${TEMP_DEFCONFIG} || {
         send_telegram_error
         exit 1
     }
@@ -154,10 +156,11 @@ build_kernel() {
         NM=llvm-nm \
         OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
-        CLANG_TRIPLE=aarch64-linux-gnu-
+        STRIP=llvm-strip \
+        CLANG_TRIPLE=aarch64-linux-gnu- \
         CROSS_COMPILE=aarch64-linux-gnu- \
         CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-        KCFLAGS=-w \
+        KCFLAGS="-w --gcc-toolchain=${GCC_TOOLCHAIN}" \
         CONFIG_SECTION_MISMATCH_WARN_ONLY=y || {
             send_telegram_error
             exit 1
