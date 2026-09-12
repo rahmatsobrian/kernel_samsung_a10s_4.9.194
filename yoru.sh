@@ -22,10 +22,10 @@ KIMG_DTB="$OUTDIR/Image.gz-dtb"
 KIMG="$OUTDIR/Image.gz"
 
 # ========== TOOLCHAIN (CLANG) ===========
-#export PATH="$ROOTDIR/zyc-clang/bin:$PATH"
-export PATH="$ROOTDIR/clang903/bin:$PATH"
-TC64="aarch64-linux-gnu-"
-TC32="arm-linux-gnueabi-"
+export PATH="$ROOTDIR/zyc-clang/bin:$PATH"
+#export PATH="$ROOTDIR/clang903/bin:$PATH"
+#TC64="aarch64-linux-gnu-"
+#TC32="arm-linux-gnueabi-"
 # ================= INFO =================
 KERNEL_NAME="Yoru"
 DEVICE="galaxy-a10s"
@@ -124,38 +124,38 @@ build_kernel() {
 
     echo -e "$yellow[+] Building Kernel [${VARIANT}]...$white"
    
+    #make -j$(nproc --all) \
+       # ARCH=arm64 \
+      #  O=out \
+      #  CC=clang \
+      #  LD=ld.lld \
+      #  AR=llvm-ar \
+       # NM=llvm-nm \
+     #   OBJCOPY=llvm-objcopy \
+     #   OBJDUMP=llvm-objdump \
+       # STRIP=llvm-strip \
+     #   CLANG_TRIPLE=aarch64-linux-gnu- \
+     #   CROSS_COMPILE=$TC64 \
+      #  CROSS_COMPILE_ARM32=$TC32 \
+     #   CROSS_COMPILE_COMPAT=$TC32 \
+     #   KCFLAGS=-w \
+      #  CONFIG_SECTION_MISMATCH_WARN_ONLY=y || {
+        #    send_telegram_error
+       #     exit 1
+      #  }
+    
+    # Eksekusi kompilasi utama dengan flag sapu jagat
     make -j$(nproc --all) \
         ARCH=arm64 \
         O=out \
         CC=clang \
-        LD=ld.lld \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        OBJCOPY=llvm-objcopy \
-        OBJDUMP=llvm-objdump \
-        STRIP=llvm-strip \
-        CLANG_TRIPLE=aarch64-linux-gnu- \
-        CROSS_COMPILE=$TC64 \
-        CROSS_COMPILE_ARM32=$TC32 \
-        CROSS_COMPILE_COMPAT=$TC32 \
+        CROSS_COMPILE=aarch64-linux-gnu- \
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
         KCFLAGS=-w \
         CONFIG_SECTION_MISMATCH_WARN_ONLY=y || {
             send_telegram_error
             exit 1
         }
-    
-    # Eksekusi kompilasi utama dengan flag sapu jagat
-   # make -j$(nproc --all) \
-     #   ARCH=arm64 \
-    #    O=out \
-    #    CC=clang \
-     #   CROSS_COMPILE=aarch64-linux-gnu- \
-     #   CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-      #  KCFLAGS=-w \
-     #   CONFIG_SECTION_MISMATCH_WARN_ONLY=y || {
-       #     send_telegram_error
-     #       exit 1
-     #   }
 
     BUILD_END=$(TZ=Asia/Jakarta date +%s)
     DIFF=$((BUILD_END - BUILD_START))
