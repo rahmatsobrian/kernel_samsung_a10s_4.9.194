@@ -66,12 +66,12 @@ KBUILD_AFLAGS	+= $(lseinstr)
 ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
 KBUILD_CPPFLAGS	+= -mbig-endian
 AS		+= -EB
-LD		+= -EB -m aarch64elfb
+LD		+= -EB
 UTS_MACHINE	:= aarch64_be
 else
 KBUILD_CPPFLAGS	+= -mlittle-endian
 AS		+= -EL
-LD		+= -EL -m aarch64elf
+LD		+= -EL
 UTS_MACHINE	:= aarch64
 endif
 
