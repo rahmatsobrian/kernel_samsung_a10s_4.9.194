@@ -128,7 +128,12 @@ build_kernel() {
         ARCH=arm64 \
         O=out \
         CC=clang \
+        LD=ld.lld \
+        AR=llvm-ar \
+        NM=llvm-nm \
+        OBJCOPY=llvm-objcopy \
         OBJDUMP=llvm-objdump \
+        STRIP=llvm-strip \
         CLANG_TRIPLE=aarch64-linux-gnu- \
         CROSS_COMPILE=$TC64 \
         CROSS_COMPILE_ARM32=$TC32 \
