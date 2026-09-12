@@ -71,7 +71,7 @@ UTS_MACHINE	:= aarch64_be
 else
 KBUILD_CPPFLAGS	+= -mlittle-endian
 AS		+= -EL
-LD		+= -EL
+LD		+= -EL -m aarch64linux
 UTS_MACHINE	:= aarch64
 endif
 
