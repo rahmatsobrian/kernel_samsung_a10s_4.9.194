@@ -71,7 +71,8 @@ UTS_MACHINE	:= aarch64_be
 else
 KBUILD_CPPFLAGS	+= -mlittle-endian
 AS		+= -EL
-override LD	+= -EL -m aarch64linux
+# Ganti aarch64linux menjadi aarch64elf di sini:
+override LD	+= -EL -m aarch64elf
 UTS_MACHINE	:= aarch64
 endif
 
